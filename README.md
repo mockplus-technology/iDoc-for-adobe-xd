@@ -1,4 +1,4 @@
-#Make design handoff more easier
+# Make design handoff more easier
 
 * Export designs in one click from Sketch, Adobe XD and Adobe Photoshop.
 * Support exporting designs from Sketch, PS, XD and uploading prototypes of Axure and Mockplus.
@@ -7,7 +7,7 @@
 
 ![design](https://idoc.mockplus.com/enUS/images/idoc/content1-1.png)
 
-#Make product requirements more clear
+# Make product requirements more clear
 * Support PDF, Word, PPT, Excel and other documents, with online preview.
 * Support seamless uploading of Mockplus and Axure prototypes to iDoc with one click.
 * Add multiple pages as state page and keep updating. Easy to manage and preview multiple states.
@@ -15,7 +15,7 @@
 
 ![interactive](https://idoc.mockplus.com/enUS/images/idoc/content1-2.png)
 
-#Make coding work more efficient
+# Make coding work more efficient
 * Support various ways of accessing specs and converts them to percentage values. Select a single layer or multiple layers.
 * Generate development resources automatically. Download selected or all assets. All slices automatically fit different device sizes.
 * Select the platform you’re developing for, and iDoc will generate tailored resources for this platform.
@@ -23,7 +23,7 @@
 
 ![coding](https://idoc.mockplus.com/enUS/images/idoc/content-frontend-en-poster.png)
 
-#Make design teamwork more faster
+# Make design teamwork more faster
 * Have the entire design process in Mockplus iDoc.
 * Keep designers, product managers and developers working collaboratively.
 * @ members in a comment and filter comments by member name for better communication.
@@ -31,7 +31,7 @@
 
 ![teamwork](https://idoc.mockplus.com/enUS/images/idoc/content4-1.png)
 
-#Connect Your Entire Product Design Workflow
+# Connect Your Entire Product Design Workflow
 Make design collaboration easier
 
 [Get Start for FREE](https://user.mockplus.com/signin?next=http://idoc.mockplus.com/app)
