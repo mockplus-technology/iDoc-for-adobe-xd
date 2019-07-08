@@ -34,4 +34,4 @@
 # Connect Your Entire Product Design Workflow
 Make design collaboration easier
 
-[Get Start for FREE](https://user.mockplus.com/signin?next=http://idoc.mockplus.com/app)
+[Get Start for FREE](https://idoc.mockplus.com)
