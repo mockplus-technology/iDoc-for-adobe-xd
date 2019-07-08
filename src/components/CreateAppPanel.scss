@@ -1,0 +1,81 @@
+@import "./scss/variables";
+
+.create-panel {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+
+  .content {
+    position: relative;
+    width: 80%;
+    height: 320px;
+    margin: 50px auto;
+    padding: 50px 0;
+    background-color: $color-panel-bg;
+    border: 1px solid $color-xd-border;
+	  border-radius: 4px;
+    .app-name {
+      width: 80%;
+      margin-left: 10%;
+    }
+    .select-appSet {
+      position: relative;
+      width: 80%;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      border: 1px solid $color-lightGrey;
+      padding: 5px 5px;
+      border-radius: 4px;
+      text-overflow: ellipsis;
+      margin: 20px auto;
+
+        span {
+          margin-right: 20px;
+        }
+    
+        .arrow {
+          position: absolute;
+          width: 8px;
+          height: 5px;
+          right: 10px;
+          top: 15px;
+          pointer-events: none;
+        }
+    }
+
+      .c-list-box {
+        position: absolute;
+        width: 80%;
+        height: 100%;
+        z-index: 10;
+        top: 135px;
+        margin-left: 10%;
+      }
+    
+    .c-radio-group {
+      width: 80%;
+      margin-left: 10%;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 80%;
+      margin-bottom: 10px;
+    }   
+    .back-img {
+      font-size: 16px;
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      top: 10px;
+      right: 10px;
+      z-index: 11;
+    }
+  }
+}
