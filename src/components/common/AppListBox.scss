@@ -1,0 +1,49 @@
+@import "../scss/variables";
+
+.c-list-box{
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: fit-content;
+
+  background-color: $color-white;
+  border: 1px solid $color-xd-border;
+
+  ul {
+    position: relative;
+    top: 0;
+    width: 100%;
+    margin: auto;
+    padding: 5px 0;
+
+    li {
+      height: 30px;
+      text-indent: 10px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      &:hover {
+        background-color: $color-panel-bg;
+      }
+      &.selected-item {
+        background-color: $color-panel-bg;
+      }
+      &.separator {
+        height: 0;
+        margin: 5px;
+        border-bottom: 1px solid $color-lightGrey;
+        padding: 0;
+      }
+      .spread-icon {
+        width: 12px;
+        height: 12px;
+        margin-right: 10px;
+      }
+    }
+    .app-set-app-item {
+      padding-left: 30px;
+    }
+  }
+}

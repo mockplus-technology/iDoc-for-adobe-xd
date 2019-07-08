@@ -1,0 +1,9 @@
+@import "../scss/variables";
+
+.has-new-version {
+  color: $color-sysRed;
+}
+
+.version-number {
+  color: $color-textGrey;
+}

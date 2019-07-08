@@ -1,0 +1,30 @@
+.c-radio-group {
+  color: #000;
+
+  & >.item {
+    margin: 10px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+
+    & > .radio-icon {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid #707070;
+      padding: 0;
+      margin: 0;
+      &.selected {
+        background-color: #707070;
+      }
+    }
+
+    & > span {
+      color: #000;
+      flex: 1;
+      margin-left: 5px;
+    }
+  }
+}

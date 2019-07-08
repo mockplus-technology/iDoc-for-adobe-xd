@@ -1,0 +1,181 @@
+@import "./scss/variables";
+
+* {
+  font-size: 12px;
+}
+
+.c-app {
+  button,
+  .c-selector,
+  label {
+    width: 100%;
+    margin: 10px auto;
+    display: block;
+  }
+
+  .hidden-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  .app-bottom {
+    width: 100%;
+    position: absolute;
+    padding: 0 30px 10px;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+
+    .version-number,
+    .has-new-version{
+      flex: 1;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+
+    .my-app{
+      text-align: right;
+      flex: initial;
+      width: fit-content;
+      margin-left: 20px;
+      color: $color-text;
+    }
+
+    .disabled-link {
+      color: $color-grey;
+      pointer-events: none;
+    }
+  }
+
+  .artboards-info {
+    padding: 30px 0;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+  }
+
+  .actions {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    // justify-content: space-between;
+    align-items: center;
+
+    .add-btn {
+      flex: initial;
+      width: 18px;
+      margin-right: 10px;
+
+      img {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .menu-actions {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      img {
+        width: 18px;
+        height: 18px;
+        margin-left: 10px;
+      }
+    }
+
+    .choose-app {
+      position: relative;
+      width: 200px;
+      height: 24px;
+      font-size: 14px;
+      border: 1px solid $color-lightGrey;
+      padding: 3px 5px;
+      border-radius: 4px;
+      text-overflow: ellipsis;
+      span {
+        margin-right: 20px;
+      }
+      .arrow {
+        position: absolute;
+        width: 8px;
+        height: 5px;
+        right: 10px;
+        top: 10px;
+      }
+    }
+  }
+
+  .device-box {
+    height: 24px;
+    border: 1px solid $color-lightGrey;
+    padding: 3px 5px;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    margin: 30PX 0;
+    span {
+      margin-right: 20px;
+    }
+
+    .arrow {
+      position: absolute;
+      width: 8px;
+      height: 5px;
+      right: 10px;
+      top: 10px;
+      pointer-events: none;
+    }
+    .choose-device-title {
+      padding: 5px 0;
+    }
+    .app-btn {
+      color: $color-text;
+    }
+  }
+  
+  .state-box{
+    position: relative;
+    top: -10px;
+    .about{
+      position: absolute;
+      top: 8px;
+      right: -35px;
+    }
+    .is-mac-about{
+      position: absolute;
+      top: 4px;
+      right: -35px;
+    }
+  }
+
+  .log-out-box{
+    display: flex;
+    flex-wrap: nowrap;
+    .log-out-main{
+      color:$color-sysRed;
+      &:hover{
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .icon-button{
+    position: relative;
+    .tips{
+      position: absolute;
+      top: 150%;
+      left: 0;
+      background: $color-white;
+      border: 1px solid $color-xd-border;
+      display: none;
+    }
+    &:hover{
+      .tips{
+        display:block;
+      }
+    }
+  }
+}

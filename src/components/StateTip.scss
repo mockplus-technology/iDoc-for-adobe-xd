@@ -1,0 +1,32 @@
+@import "./scss/variables";
+
+.c-state-tip {
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  .content {
+    position: relative;
+    width: 80%;
+    height: 260px;
+    margin: 50px auto;
+    padding: 50px 0;
+    background-color: $color-panel-bg;
+    border: 1px solid $color-xd-border;
+    border-radius: 4px;
+    .back-img {
+      font-size: 16px;
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      top: 10px;
+      right: 10px;
+      z-index: 11;
+    }
+    p {
+      padding: 10px 20px
+    }
+  }
+}
