@@ -1,0 +1,43 @@
+{
+  "name": "Mockplus iDoc",
+  "id": "48b438e5",
+  "version": "1.2.4",
+  "description": "Mockplus iDoc makes product design collaboration faster and easier. Its features include generating specs smartly, cutting Slices in one click, various note styles, fast interaction, full-view dashboard and team management. Connect entire product design workflow with only one document!  Chinese: 更快更简单的产品协作设计。智能标注、一键切图、多样批注、交互原型、全貌画板、团队管理。从产品到开发，只要一个文档。立即访问： https://idoc.mockplus.cn 。",
+  "icons": [
+    {
+      "width": 16,
+      "height": 16,
+      "path": "images/logo/16.png"
+    },
+    {
+      "width": 70,
+      "height": 70,
+      "path": "images/logo/70.png"
+    },
+    {
+      "width": 108,
+      "height": 108,
+      "path": "images/logo/108.png"
+    },
+    {
+      "width": 240,
+      "height": 240,
+      "path": "images/logo/240.png"
+    }
+  ],
+  "host": {
+    "app": "XD",
+    "minVersion": "13.0.0"
+  },
+  "uiEntryPoints": [
+    {
+      "type": "menu",
+      "label": "Mockplus iDoc",
+      "commandId": "menuCommand",
+      "shortcut": {
+        "mac": "Cmd+p",
+        "win": "Ctrl+p"
+      }
+    }
+  ]
+}

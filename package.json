@@ -1,0 +1,38 @@
+{
+  "name": "helllo_react_jsx",
+  "version": "1.2.4",
+  "main": "main.js",
+  "scripts": {
+    "watch": "nodemon -w src -e js,jsx,css,scss -w webpack.config.js -x yarn build",
+    "web": "webpack-dev-server --config webpack.web.js",
+    "build": "webpack --config webpack.config.js",
+    "publish": "webpack --config webpack.build.js"
+  },
+  "license": "none",
+  "private": true,
+  "devDependencies": {
+    "file-loader": "^2.0.0",
+    "nodemon": "^1.18.7",
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "cssnano": "^4.1.4",
+    "md5-node": "^1.0.1",
+    "node-sass": "^4.8.3",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^11.1.0",
+    "postcss-loader": "^3.0.0",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.22.0",
+    "uuid": "^3.3.2",
+    "yarn": "^1.12.3"
+  }
+}
