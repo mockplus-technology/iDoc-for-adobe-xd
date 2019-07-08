@@ -5,7 +5,6 @@ const {
   Rectangle,
   Line,
   Path,
-  LinearGradient,
   RepeatGrid,
   BooleanGroup,
 } = require("scenegraph");
@@ -176,9 +175,9 @@ function parseSceneNode(node, data, artboardPosition) {
     left: Math.round(width) ? Math.round(left):Math.round(left)-1,
     top: Math.round(height) ? Math.round(top):Math.round(top)-1,
     width:  Math.ceil(width) === 0? 1 : Math.ceil(width),
-    height: Math.ceil(height) === 0? 1 : Math.ceil(height),   
-    effectWidth:  shadow && shadow.visible? globalDrawBounds.width : null,                            
-    effectHeight:  shadow && shadow.visible? globalDrawBounds.height : null,                            
+    height: Math.ceil(height) === 0? 1 : Math.ceil(height),
+    effectWidth:  shadow && shadow.visible? globalDrawBounds.width : null,
+    effectHeight:  shadow && shadow.visible? globalDrawBounds.height : null,
   };
 
   if (rotation) {

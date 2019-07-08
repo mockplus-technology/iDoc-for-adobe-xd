@@ -8,14 +8,14 @@ const { VERSION } = require('../constants/version');
 const urlUtils = require('./urlUtils');
 const uuidv1 = require('uuid/v1');
 const md5 = require('md5-node');
-urlUtils.initUrl()
+urlUtils.initUrl();
 /**
  * 生成字符串的 hash
  * FIXME: 需要比对 hash 来判定页面是否需要上传
  * @returns {string}
  */
-let needReplaceBitmap = []
-let spliceImgList = []
+let needReplaceBitmap = [];
+let spliceImgList = [];
 String.prototype.hashCode = function () {
   let hash = 0, i, chr;
   if (this.length === 0) return hash;
@@ -265,7 +265,7 @@ async function exportArtboards(appID, artboards, device, onInfoUpdate) {
 
   if (urlCfg.useOSS) {
     if(needReplaceBitmap.length === 0 ){
-      spliceImgList = [] 
+      spliceImgList = []
     } else {
       const ossTokenUrl = await getBatchOSSToken(needReplaceBitmap.map(item => {
         const curDate = new Date();
@@ -317,7 +317,7 @@ async function exportArtboards(appID, artboards, device, onInfoUpdate) {
     json = await needExportedDatas[index].file.read({
       format: storage.formats.utf8,
     });
-    
+
     currentUploadedAssests += 1;
     onInfoUpdate({
       progress: Math.floor(currentUploadedAssests * progressForUploadEachAssests + 30),
@@ -413,7 +413,7 @@ async function getExportArtboards(appID, artboards, device) {
 
   if (urlCfg.useOSS) {
     if(needReplaceBitmap.length === 0 ){
-      spliceImgList = [] 
+      spliceImgList = []
     } else {
       const ossTokenUrl = await getBatchOSSToken(needReplaceBitmap.map(item => {
         const curDate = new Date();

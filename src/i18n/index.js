@@ -2,7 +2,6 @@ let local = {};
 
 async function initResource(){
   const { localLanguage } = require('../utils/languageUtils');
-  const language = localLanguage();
   local = require(`./languages/${localLanguage().file}.js`);
 }
 

@@ -1,5 +1,4 @@
 const manifest = require('../../manifest');
-const {urlCfg} = require('./urlUtils');
 
 module.exports = {
   // API_PREFIX: urlCfg.api,

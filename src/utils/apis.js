@@ -1,10 +1,9 @@
 const { version, platform, } = require('./env');
 const {urlCfg} = require('./urlUtils');
-const storage = require("uxp").storage;
 const axios = require('axios');
 let token = null;
-const OS =require('os')
-const systemVersion=OS.platform()
+const OS =require('os');
+const systemVersion=OS.platform();
 
 /**
  * xml http request 辅助方法
@@ -254,7 +253,7 @@ async function getPolicy (file, filePath, isImg) {
   }else{
     throw new Error('获取导出的切图数据失败');
   }
-} 
+}
 
 module.exports = {
   uploadFile,
