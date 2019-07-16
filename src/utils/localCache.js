@@ -1,7 +1,5 @@
 const storage = require('uxp').storage;
 const fs = storage.localFileSystem;
-
-
 const cache = {};
 var isNeedSave = true;
 
@@ -47,7 +45,7 @@ async function getLocalCache() {
         }
       }
       return cache;
-    }).catch((e)=>{console.log(e)});
+    }).catch((e) => { console.log(e) });
 }
 
 async function getUserInfo() {
@@ -60,6 +58,19 @@ async function getUserInfo() {
 async function saveUserInfo(user) {
   cache.userInfo = user;
   return saveLocalCache(cache)
+}
+
+async function getAddress() {
+  if (cache) {
+    const address = cache.address;
+    return address;
+  }
+  return null;
+}
+
+async function saveAddress(address) {
+  cache.address = address;
+  return saveLocalCache(address)
 }
 
 function getSelectTeamID() {
@@ -80,18 +91,18 @@ async function saveLastSelectApp(appID) {
   return saveLocalCache(cache);
 }
 
-async function saveDevice(device){
+async function saveDevice(device) {
   cache.device = device;
   return saveLocalCache(cache);
 }
 
-function getDevice(){
+function getDevice() {
   return cache.device;
 }
 
 
 async function clearCache(force = false) {
-  if(force){
+  if (force) {
     delete cache.userInfo;
     delete cache.token;
     delete cache.device;
@@ -99,7 +110,7 @@ async function clearCache(force = false) {
     delete cache.selectTeamID;
   }
 
-  const data = {currentLanguage: cache.currentLanguage};
+  const data = { currentLanguage: cache.currentLanguage };
   return saveLocalCache(data);
 }
 
@@ -112,26 +123,26 @@ function needSave(value) {
 }
 
 
-async function saveToken(value){
+async function saveToken(value) {
   cache.token = value;
   return saveLocalCache(cache);
 }
 
-async function getToken(){
+async function getToken() {
   return cache.token;
 }
 
 
-function saveDefaultLanguage(language, needSave = true){
+function saveDefaultLanguage(language, needSave = true) {
   cache.currentLanguage = language;
-  if(needSave){
+  if (needSave) {
     saveLocalCache(cache)
   }
 }
 
-async function getDefaultLanguage(){
-  if(!cache.currentLanguage){
-    return init().then(()=>{
+async function getDefaultLanguage() {
+  if (!cache.currentLanguage) {
+    return init().then(() => {
       return cache.currentLanguage;
     });
   }
@@ -154,6 +165,8 @@ module.exports = {
   getDevice,
   saveDefaultLanguage,
   getDefaultLanguage,
+  getAddress,
+  saveAddress
 };
 
 

@@ -5,6 +5,7 @@
 }
 
 .c-app {
+
   button,
   .c-selector,
   label {
@@ -29,13 +30,13 @@
     white-space: nowrap;
 
     .version-number,
-    .has-new-version{
+    .has-new-version {
       flex: 1;
       text-align: left;
       text-overflow: ellipsis;
     }
 
-    .my-app{
+    .my-app {
       text-align: right;
       flex: initial;
       width: fit-content;
@@ -78,6 +79,7 @@
       display: flex;
       flex-flow: row nowrap;
       justify-content: space-between;
+
       img {
         width: 18px;
         height: 18px;
@@ -94,9 +96,11 @@
       padding: 3px 5px;
       border-radius: 4px;
       text-overflow: ellipsis;
+
       span {
         margin-right: 20px;
       }
+
       .arrow {
         position: absolute;
         width: 8px;
@@ -115,6 +119,7 @@
     overflow: hidden;
     position: relative;
     margin: 30PX 0;
+
     span {
       margin-right: 20px;
     }
@@ -127,44 +132,51 @@
       top: 10px;
       pointer-events: none;
     }
+
     .choose-device-title {
       padding: 5px 0;
     }
+
     .app-btn {
       color: $color-text;
     }
   }
-  
-  .state-box{
+
+  .state-box {
     position: relative;
     top: -10px;
-    .about{
+
+    .about {
       position: absolute;
       top: 8px;
       right: -35px;
     }
-    .is-mac-about{
+
+    .is-mac-about {
       position: absolute;
       top: 4px;
       right: -35px;
     }
   }
 
-  .log-out-box{
+  .log-out-box {
     display: flex;
     flex-wrap: nowrap;
-    .log-out-main{
-      color:$color-sysRed;
-      &:hover{
+
+    .log-out-main {
+      color: $color-sysRed;
+
+      &:hover {
         text-decoration: underline;
         cursor: pointer;
       }
     }
   }
 
-  .icon-button{
+  .icon-button {
     position: relative;
-    .tips{
+
+    .tips {
       position: absolute;
       top: 150%;
       left: 0;
@@ -172,9 +184,10 @@
       border: 1px solid $color-xd-border;
       display: none;
     }
-    &:hover{
-      .tips{
-        display:block;
+
+    &:hover {
+      .tips {
+        display: block;
       }
     }
   }

@@ -5,6 +5,7 @@ const {
   Rectangle,
   Line,
   Path,
+  LinearGradient,
   RepeatGrid,
   BooleanGroup,
 } = require("scenegraph");
@@ -42,7 +43,7 @@ function transparent() {
 }
 
 function parseFill(fill) {
-  if(fill) {
+  if (fill) {
     const name = fill.constructor.name;
     if ((name === 'LinearGradientFill') || (name === 'RadialGradientFill')) {
       const { startX, startY, endX, endY, colorStops } = fill;
@@ -68,7 +69,7 @@ function parseFill(fill) {
   }
   return {
     type: 'normal',
-    value:transparent(),
+    value: transparent(),
   };
 }
 
@@ -152,7 +153,7 @@ function parseEffect(data, shadow, blur) {
 
 function parseSceneNode(node, data, artboardPosition) {
   const {
-    guid, name, constructor, opacity, rotation, localBounds,shadow,
+    guid, name, constructor, opacity, rotation, localBounds, shadow,
     globalDrawBounds,
     globalBounds, boundsInParent,
   } = node;
@@ -160,8 +161,8 @@ function parseSceneNode(node, data, artboardPosition) {
   const left = globalBounds.x - artboardPosition.x;
   const top = globalBounds.y - artboardPosition.y;
   const { width, height } = boundsInParent;
-  let  type = constructor.name;
-  if (constructor.name ==='Rectangle' || constructor.name === 'Ellipse') {
+  let type = constructor.name;
+  if (constructor.name === 'Rectangle' || constructor.name === 'Ellipse') {
     type = 'shape'
   }
   data.basic = {
@@ -172,12 +173,12 @@ function parseSceneNode(node, data, artboardPosition) {
     zIndex: -1, // FIXME: 获取数据
   };
   data.bounds = {
-    left: Math.round(width) ? Math.round(left):Math.round(left)-1,
-    top: Math.round(height) ? Math.round(top):Math.round(top)-1,
-    width:  Math.ceil(width) === 0? 1 : Math.ceil(width),
-    height: Math.ceil(height) === 0? 1 : Math.ceil(height),
-    effectWidth:  shadow && shadow.visible? globalDrawBounds.width : null,
-    effectHeight:  shadow && shadow.visible? globalDrawBounds.height : null,
+    left: Math.round(width) ? Math.round(left) : Math.round(left) - 1,
+    top: Math.round(height) ? Math.round(top) : Math.round(top) - 1,
+    width: Math.ceil(width) === 0 ? 1 : Math.ceil(width),
+    height: Math.ceil(height) === 0 ? 1 : Math.ceil(height),
+    effectWidth: shadow && shadow.visible ? globalDrawBounds.width : null,
+    effectHeight: shadow && shadow.visible ? globalDrawBounds.height : null,
   };
 
   if (rotation) {
@@ -337,9 +338,7 @@ function parseLayers(node, layers, artboardPosition, markedToExportNodes) {
 
 function exportArtboard(artboard, markedToExportNodes, device) {
   const { guid, name, width, height, globalDrawBounds } = artboard;
-  if(width > 5000 || height > 5000) {
-    throw Error(i18n('export.uploadingError'))
-  }
+
   const { x, y } = globalDrawBounds;
   const { value, sliceScale, artboardScale } = device;
   const data = {

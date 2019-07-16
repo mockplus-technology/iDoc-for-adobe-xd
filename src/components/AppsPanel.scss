@@ -1,6 +1,6 @@
 @import "./scss/variables";
 
-.c-apps-panel{
+.c-apps-panel {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -8,10 +8,10 @@
   left: 0;
   z-index: 100;
 
-  .c-list-box{
+  .c-list-box {
     width: 200px;
     margin-top: 63px;
-    margin-right: 85px;
-    margin-left: 28px;
+    margin-right: 90px;
+    margin-left: 55px;
   }
 }

@@ -1,6 +1,6 @@
 @import "../scss/variables";
 
-.c-list-box{
+.c-list-box {
   overflow-y: auto;
   overflow-x: hidden;
   width: fit-content;
@@ -23,10 +23,12 @@
       &:hover {
         background-color: $color-panel-bg;
       }
-      &.selected-item{
+
+      &.selected-item {
         background-color: $color-panel-bg;
       }
-      &.separator{
+
+      &.separator {
         height: 0;
         margin: 5px;
         border-bottom: 1px solid $color-lightGrey;

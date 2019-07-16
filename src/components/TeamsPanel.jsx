@@ -13,17 +13,20 @@ require('./TeamsPanel.scss');
  * @returns {*}
  * @constructor
  */
-const TeamsPanel = ({teams, onSelected, onClose, visible,newTeamID}) => {
-
-  if(!visible){
-    return <div/>;
+const TeamsPanel = ({ teams, onSelected, onClose, visible, newTeamID }) => {
+  if (!visible) {
+    return <div />;
   }
   return (
     <div className="c-teams-panel" onClick={onClose}>
-      <ListBox onSelected={onSelected} items={teams} labelFunction={team=>team.name} Selected={newTeamID}/>
+      <ListBox
+        onSelected={onSelected}
+        items={teams}
+        labelFunction={team => team.name}
+        Selected={newTeamID}
+      />
     </div>
-  )
-
-}
+  );
+};
 
 module.exports = TeamsPanel;

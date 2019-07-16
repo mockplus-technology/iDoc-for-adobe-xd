@@ -4,11 +4,10 @@ const Menu = require('./Menu.jsx');
 require('./Selector.scss');
 
 class Selector extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      dropDown: false
+      dropDown: false,
     };
     this.getValue = this.getValue.bind(this);
     this.handleMenuSelected = this.handleMenuSelected.bind(this);
@@ -16,36 +15,38 @@ class Selector extends React.Component {
     this.handleWindowClick = this.handleWindowClick.bind(this);
   }
 
-  componentDidMount(){
-    if(this.selector){
-      const index = this.props.options.findIndex(item=>(item===this.props.value));
-      this.selector.setAttribute('selectedOptions', [this.selector.childNodes[index]]);
+  componentDidMount() {
+    if (this.selector) {
+      const index = this.props.options.findIndex(
+        item => item === this.props.value,
+      );
+      this.selector.setAttribute('selectedOptions', [
+        this.selector.childNodes[index],
+      ]);
     }
     window.addEventListener('click', this.handleWindowClick);
   }
 
-  componentDidUpdate(){
-  }
+  componentDidUpdate() {}
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     window.removeEventListener('click', this.handleWindowClick);
   }
 
   getValue(value) {
     const { labelFunction } = this.props;
-    if(labelFunction && value){
+    if (labelFunction && value) {
       return labelFunction(value);
     }
     return value;
-  };
+  }
 
-  handleWindowClick(e){
-    if(!this.clickMe) {
-      this.setState({dropDown: false});
+  handleWindowClick(e) {
+    if (!this.clickMe) {
+      this.setState({ dropDown: false });
     }
     this.clickMe = false;
   }
-
 
   handleMenuSelected(e) {
     const { onSelected } = this.props;
@@ -53,33 +54,30 @@ class Selector extends React.Component {
     this.setState({ dropDown: false });
   }
 
-  handlePopup(){
+  handlePopup() {
     this.setState({ dropDown: !this.state.dropDown });
   }
 
-  render(){
-    const {options,value} = this.props;
-    return(
+  render() {
+    const { options, value } = this.props;
+    return (
       <div className="c-selector">
         <select
           uxpQuiet="false"
-          selectedIndex={options.findIndex(item=>item===value)}
-          ref={dom=>this.selector = dom}
-          onChange={this.handleMenuSelected}>
-          {
-            options && options.map(item=>{
-              return (
-                <option value={item} >{this.getValue(item)}</option>
-              )
-            })
-
-          }
+          selectedIndex={options.findIndex(item => item === value)}
+          ref={dom => (this.selector = dom)}
+          onChange={this.handleMenuSelected}
+        >
+          {options &&
+            options.map(item => {
+              return <option value={item}>{this.getValue(item)}</option>;
+            })}
         </select>
         {/*<div className="selector-label">*/}
-          {/*<span>{this.getValue(value)}</span>*/}
+        {/*<span>{this.getValue(value)}</span>*/}
         {/*</div>*/}
       </div>
-    )
+    );
   }
 }
 

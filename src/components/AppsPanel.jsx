@@ -1,7 +1,7 @@
-const React = require("react");
-const AppListBox = require("./common/AppListBox.jsx");
+const React = require('react');
+const AppListBox = require('./common/AppListBox.jsx');
 
-require("./AppsPanel.scss");
+require('./AppsPanel.scss');
 
 /**
  * 项目选择面板

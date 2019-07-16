@@ -23,6 +23,7 @@
       margin: auto;
       top: 60px;
       min-height: 40px;
+
       div {
         max-width: 100%;
         margin: 0 auto;
@@ -32,9 +33,11 @@
         white-space: normal;
         max-width: 260px;
         border-radius: 6px;
+
         div {
           background-color: $color-sysBlue;
           padding: 10px;
+
           span {
             outline: none;
             min-height: 20px;
@@ -55,11 +58,13 @@
       right: 5;
       top: 5;
       z-index: 10000;
+
       img {
         width: 14px;
         height: 14px;
       }
-      .tips{
+
+      .tips {
         left: -10px;
       }
     }
@@ -71,12 +76,13 @@
       //background-color: #009dff;
       z-index: 10000;
       display: none;
+
       img {
         width: 18px;
         height: 18px;
       }
 
-      &.visible{
+      &.visible {
         display: block;
       }
     }

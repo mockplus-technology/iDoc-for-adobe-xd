@@ -1,6 +1,6 @@
 const React = require('react');
 const { init, getUserInfo, getToken } = require('../utils/localCache');
-const {saveToken} = require('../utils/apis');
+const { saveToken } = require('../utils/apis');
 
 const initConfig = require('../utils/init');
 
@@ -11,45 +11,44 @@ const initConfig = require('../utils/init');
  *   b. 没有，跳转到 Login
  */
 class Init extends React.Component {
-
   constructor() {
     super();
   }
 
   componentDidMount() {
     const { onGoToLogin, onGoToApp } = this.props;
-    init().then(() => {
-      initConfig().then(()=>{
-        // 获取本地缓存用户信息
-        getUserInfo().then((user) => {
-          const isLogined = !!user;
-          if (isLogined) {
-            // 获取本地缓存 token
-            getToken().then((token)=>{
-              if(token) {
-                saveToken(token)
-                onGoToApp(user);
-              }else{
-                onGoToLogin();
+    init()
+      .then(() => {
+        initConfig().then(() => {
+          // 获取本地缓存用户信息
+          getUserInfo()
+            .then(user => {
+              const isLogined = !!user;
+              if (isLogined) {
+                // 获取本地缓存 token
+                getToken().then(token => {
+                  if (token) {
+                    saveToken(token);
+                    onGoToApp(user);
+                  } else {
+                    onGoToLogin();
+                  }
+                });
+                return;
               }
-            });
-            return;
-          }
+              onGoToLogin();
+            })
+            .catch(onGoToLogin);
+        });
+      })
+      .catch(e => {
+        init().then(() => {
           onGoToLogin();
-        }).catch(onGoToLogin);
+        });
       });
-    }).catch((e)=>{
-      init().then(()=>{
-        onGoToLogin()
-      });
-
-    });
   }
-
-
-
   render() {
-    return <div/>
+    return <div />;
   }
 }
 

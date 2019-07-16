@@ -1,13 +1,13 @@
-const React = require("react");
-const { i18n } = require("../../i18n");
+const React = require('react');
+const { i18n } = require('../../i18n');
 
-require("./AppListBox.scss");
+require('./AppListBox.scss');
 
 class AppListBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectAppSetID: props.Selected.appSetID
+      selectAppSetID: props.Selected.appSetID,
     };
     this.handleWindowClick = this.handleWindowClick.bind(this);
   }
@@ -22,15 +22,16 @@ class AppListBox extends React.Component {
       onSelected,
       labelFunction,
       maxHeight = 300,
-      Selected
+      Selected,
     } = this.props;
     const { selectAppSetID } = this.state;
     let height = 0;
     if (items && items.length > 0) {
-      if( items.length === 1) {
-        height = items[0].appSets.length?(items[0].appSets.length + 1) * 30 :30 
-      }
-      else{
+      if (items.length === 1) {
+        height = items[0].appSets.length
+          ? (items[0].appSets.length + 1) * 30
+          : 30;
+      } else {
         height = items.length * 30;
       }
     } else {
@@ -44,7 +45,7 @@ class AppListBox extends React.Component {
           {items &&
             items.map(item => {
               const text = labelFunction(item);
-              if (text === "-") {
+              if (text === '-') {
                 return (
                   <li
                     className="separator"
@@ -60,12 +61,12 @@ class AppListBox extends React.Component {
                       <li
                         className={`${
                           Selected && Selected === item.id
-                            ? "selected-item"
+                            ? 'selected-item'
                             : null
                         }`}
                         onClick={e => {
                           this.setState({
-                            selectAppSetID: item._id
+                            selectAppSetID: item._id,
                           });
                           e.stopPropagation();
                         }}
@@ -74,8 +75,8 @@ class AppListBox extends React.Component {
                         <img
                           src={`${
                             selectAppSetID === item._id
-                              ? "../../../images/icons/spread-bottom.png"
-                              : "../../../images/icons/spread-left.png"
+                              ? '../../../images/icons/spread-bottom.png'
+                              : '../../../images/icons/spread-left.png'
                           }`}
                           alt=""
                           className="spread-icon"
@@ -87,7 +88,7 @@ class AppListBox extends React.Component {
                           <li
                             className={`app-set-app-item ${
                               Selected && Selected._id === appItem._id
-                                ? "selected-item"
+                                ? 'selected-item'
                                 : null
                             }`}
                             onClick={e => {
@@ -105,7 +106,7 @@ class AppListBox extends React.Component {
                   <li
                     className={`${
                       Selected && Selected._id === item._id
-                        ? "selected-item"
+                        ? 'selected-item'
                         : null
                     }`}
                     onClick={e => {

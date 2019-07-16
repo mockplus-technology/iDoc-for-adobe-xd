@@ -16,11 +16,13 @@
     padding: 50px 0;
     background-color: $color-panel-bg;
     border: 1px solid $color-xd-border;
-	  border-radius: 4px;
+    border-radius: 4px;
+
     .app-name {
       width: 80%;
       margin-left: 10%;
     }
+
     .select-appSet {
       position: relative;
       width: 80%;
@@ -35,29 +37,29 @@
       text-overflow: ellipsis;
       margin: 20px auto;
 
-        span {
-          margin-right: 20px;
-        }
-    
-        .arrow {
-          position: absolute;
-          width: 8px;
-          height: 5px;
-          right: 10px;
-          top: 15px;
-          pointer-events: none;
-        }
+      span {
+        margin-right: 20px;
+      }
+
+      .arrow {
+        position: absolute;
+        width: 8px;
+        height: 5px;
+        right: 10px;
+        top: 15px;
+        pointer-events: none;
+      }
     }
 
-      .c-list-box {
-        position: absolute;
-        width: 80%;
-        height: 100%;
-        z-index: 10;
-        top: 135px;
-        margin-left: 10%;
-      }
-    
+    .c-list-box {
+      position: absolute;
+      width: 80%;
+      height: 100%;
+      z-index: 10;
+      top: 135px;
+      margin-left: 10%;
+    }
+
     .c-radio-group {
       width: 80%;
       margin-left: 10%;
@@ -67,7 +69,8 @@
     button {
       width: 80%;
       margin-bottom: 10px;
-    }   
+    }
+
     .back-img {
       font-size: 16px;
       position: absolute;

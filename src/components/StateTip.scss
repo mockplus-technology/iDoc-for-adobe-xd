@@ -7,6 +7,7 @@
   left: 0;
   width: 100%;
   margin: 0;
+
   .content {
     position: relative;
     width: 80%;
@@ -16,6 +17,7 @@
     background-color: $color-panel-bg;
     border: 1px solid $color-xd-border;
     border-radius: 4px;
+
     .back-img {
       font-size: 16px;
       position: absolute;
@@ -25,6 +27,7 @@
       right: 10px;
       z-index: 11;
     }
+
     p {
       padding: 10px 20px
     }
