@@ -2,7 +2,7 @@ const React = require('react');
 const RadioGroup = require('./common/RadioGroup.jsx');
 
 const { languageList } = require('../utils/languageUtils');
-const {i18n} = require('../i18n');
+const { i18n } = require('../i18n');
 
 require('./SettingPanel.scss');
 
@@ -10,20 +10,27 @@ class SettingPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      language: props.currentLanguage
-    }
+      language: props.currentLanguage,
+    };
   }
 
   render() {
     const { onLanguageChanged, isShow } = this.props;
     if (!isShow) {
-      return <div/>;
+      return <div />;
     }
-    const languages = languageList.map(language =>
-      ({ text: language.name, value: language.key }));
+    const languages = languageList.map(language => ({
+      text: language.name,
+      value: language.key,
+    }));
 
     return (
-      <div className="c-setting-panel" onClick={(e) => {e.stopPropagation()}}>
+      <div
+        className="c-setting-panel"
+        onClick={e => {
+          e.stopPropagation();
+        }}
+      >
         <div className="content">
           <div className="language">
             <div className="language-title">
@@ -33,16 +40,16 @@ class SettingPanel extends React.Component {
               <RadioGroup
                 items={languages}
                 value={this.state.language}
-                onChange={(value) => {
+                onChange={value => {
                   this.setState({ language: value });
                 }}
               />
-              <button onClick={() => {
-                onLanguageChanged(this.state.language);
-              }}>
-                {
-                  i18n('setting.ok')
-                }
+              <button
+                onClick={() => {
+                  onLanguageChanged(this.state.language);
+                }}
+              >
+                {i18n('setting.ok')}
               </button>
             </div>
           </div>

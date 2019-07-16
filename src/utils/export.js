@@ -6,16 +6,18 @@ const { getNewID, getArtboardsData } = require('./graphUtils');
 const { i18n } = require('../i18n');
 const { VERSION } = require('../constants/version');
 const urlUtils = require('./urlUtils');
+const { isLocal } = require('./env');
 const uuidv1 = require('uuid/v1');
 const md5 = require('md5-node');
-urlUtils.initUrl();
+urlUtils.initUrl()
 /**
  * 生成字符串的 hash
  * FIXME: 需要比对 hash 来判定页面是否需要上传
  * @returns {string}
  */
-let needReplaceBitmap = [];
-let spliceImgList = [];
+let needReplaceBitmap = []
+let spliceImgList = []
+
 String.prototype.hashCode = function () {
   let hash = 0, i, chr;
   if (this.length === 0) return hash;
@@ -45,12 +47,11 @@ async function saveExportedData(data) {
   };
 }
 
-
 function after(n, func) {
   if (typeof func != 'function') {
     throw new TypeError('Expected a function')
   }
-  return function(...args) {
+  return function (...args) {
     if (--n < 1) {
       return func.apply(this, args)
     }
@@ -58,29 +59,28 @@ function after(n, func) {
 }
 
 async function replaceMarkExportNode(layers, allPNGs, allSVGs) {
+
   return Promise.all(layers.map(async (node) => {
     const data = Object.assign({}, node);
     const { urlCfg } = urlUtils
-
     if (node.waitForExported) {
       const thePNGFile = allPNGs.find(png => node.waitForExported === png.id).imageFile
       const thePNGFileContent = await thePNGFile.read({
         format: storage.formats.binary,
       });
       const theSVGFile = allSVGs.find(svg => node.waitForExported === svg.id).imageFile;
-
       const theSVGFileContent = await theSVGFile.read({
         format: storage.formats.utf8,
       });
-
       data.basic.type = 'layer'
       data.slice = {
-        // 如果不使用0SS者直接使用base64去保存切图，否则将二进制上传到0SS上
-        // 是否包含base64，只有真正的矢量图才上传svg
+        //如果不使用0SS者直接使用base64去保存切图，否则将二进制上传到0SS上
+        // bitmap:md5(theSVGFileContent),
         bitmap: urlCfg.useOSS ? md5(theSVGFileContent) : new Buffer(thePNGFileContent).toString('base64'),
-        svg: JSON.stringify(theSVGFileContent).includes('data:image') ? '' : theSVGFileContent,
+        //bitmap: urlCfg.useOSS ?new Buffer(thePNGFileContent):new Buffer(thePNGFileContent).toString('base64'),
+        svg: theSVGFileContent,
       };
-      needReplaceBitmap.push({ id: md5(theSVGFileContent), content: new Buffer(thePNGFileContent)})
+      needReplaceBitmap.push({ id: md5(theSVGFileContent), content: new Buffer(thePNGFileContent) })
       delete data.waitForExported;
     }
     return data;
@@ -195,11 +195,11 @@ async function exportArtboardDatas(artboards, device) {
  * @param artboards 画板列表
  * @param appID 要上传的项目 ID
  * @param device 用户选择的设备信息
+ * @param teamID 团队ID
  * @param onInfoUpdate 实时更新界面信息回调函数
  * @returns {Promise<*>}
  */
-
-async function exportArtboards(appID, artboards, device, onInfoUpdate) {
+async function exportArtboards(appID, artboards, device, teamID = null, onInfoUpdate, ) {
 
   if (!appID) {
     throw new Error(i18n('error.chooseProject'));
@@ -215,6 +215,7 @@ async function exportArtboards(appID, artboards, device, onInfoUpdate) {
     progress: 10,
     message: i18n('export.parseSuccess'),
   });
+
   const toCheckPages = exportedDatas.map(data => ({
     clientID: data.id,
     clientHash: data.hash,
@@ -264,31 +265,33 @@ async function exportArtboards(appID, artboards, device, onInfoUpdate) {
   const progressForUploadEachAssests = 65 / totalAssestsCount;
 
   if (urlCfg.useOSS) {
-    if(needReplaceBitmap.length === 0 ){
+    if (needReplaceBitmap.length === 0) {
       spliceImgList = []
     } else {
-      const ossTokenUrl = await getBatchOSSToken(needReplaceBitmap.map(item => {
-        const curDate = new Date();
-        const objectName = `idoc/xd/${curDate.getFullYear()}-${('0' + (curDate.getMonth() + 1)).slice(-2)}-${('0' + curDate.getDate()).slice(-2)}/${uuidv1()}.png`;
+      const ossTokenUrl = await getBatchOSSToken(needReplaceBitmap.map(() => {
+        const objectName = getFileName('png')
         return { 'dataKey': objectName, 'contentType': 'image/png' }
       }))
       spliceImgList = await UploadWorker(ossTokenUrl, needReplaceBitmap)
-      }
     }
+  }
+
   //生成页面JSON
   const pagePromises = needUpdateArtboards.map(async (artboard, index) => {
     //上传图片文件
     const image = await exportedPNGs[index].outputFile.read({
       format: type === application.RenditionType.SVG ? storage.formats.utf8 : storage.formats.binary,
     });
+
     let json, jsonFile = {}, imageFile = {}
     if (urlCfg.useOSS) {
       const curDate = new Date();
       const objectName = `idoc/xd/${curDate.getFullYear()}-${('0' + (curDate.getMonth() + 1)).slice(-2)}-${('0' + curDate.getDate()).slice(-2)}/${uuidv1()}.png`;
       imageFile = await getPolicy(new Buffer(image), objectName, true)
     } else {
-      imageFile = await uploadFile(new Buffer(image), 'image');
+      imageFile = await uploadFile(new Buffer(image), 'image', teamID);
     };
+
     currentUploadedAssests += 1;
     onInfoUpdate({
       progress: Math.floor(currentUploadedAssests * progressForUploadEachAssests + 30),
@@ -300,23 +303,21 @@ async function exportArtboards(appID, artboards, device, onInfoUpdate) {
         format: storage.formats.utf8,
       });
 
-      json = await getPageJson(needReplaceBitmap,json)
+      json = await getPageJson(needReplaceBitmap, json)
 
       //upload json and uplaod page
-      const curDate = new Date();
-      const objectName = `idoc/xd/${curDate.getFullYear()}-${('0' + (curDate.getMonth() + 1)).slice(-2)}-${('0' + curDate.getDate()).slice(-2)}/${uuidv1()}.json`;
+      const objectName = getFileName('json')
       let urlInfo = await getPolicy(json, objectName);
       jsonFile = urlInfo
     } else {
       json = await needExportedDatas[index].file.read({
         format: storage.formats.binary,
       });
-      jsonFile = await uploadFile(new Buffer(json), 'json');
+      json = await needExportedDatas[index].file.read({
+        format: storage.formats.binary,
+      });
+      jsonFile = await uploadFile(new Buffer(json), 'json', teamID);
     }
-
-    json = await needExportedDatas[index].file.read({
-      format: storage.formats.utf8,
-    });
 
     currentUploadedAssests += 1;
     onInfoUpdate({
@@ -344,7 +345,6 @@ async function exportArtboards(appID, artboards, device, onInfoUpdate) {
   });
   const pages = await Promise.all(pagePromises);
   needReplaceBitmap = []
-  spliceImgList = []
   return await uploadPages({
     appID,
     pages: pages.reverse(),
@@ -352,51 +352,10 @@ async function exportArtboards(appID, artboards, device, onInfoUpdate) {
   });
 }
 
-async function getPageJson (needReplaceBitmap,json){
-  if(needReplaceBitmap.length===0 && spliceImgList.length ===0){
-    return json
-  }
-  spliceImgList.forEach(({ URL, id }) => {
-    json = json.replace(`"bitmap":"${id}"`, `"bitmap":"${URL}"`);
-  });
-  return json
-}
 
-async function UploadWorker(ossTokenUrl, needReplaceBitmap) {
-  const urls = [];
-  // 最大允许5个工作线程
-  const MAX_UPLOAD_WORKERS = 5;
-  const workersCount = Math.min(needReplaceBitmap.length, MAX_UPLOAD_WORKERS);
-  const errors = [];
-  return new Promise((res, rej) => {
-    const allWorkDone = after(workersCount, () => {
-      res(urls);
-    });
+//上传状态图的代码
 
-    const worker = () => {
-      if (needReplaceBitmap.length <= 0) {
-         allWorkDone();
-         return;
-      }
-      const image = needReplaceBitmap.shift();
-      uploadFileToOss(ossTokenUrl.shift(), new Buffer(image.content), image.id).then(imgInfo => {
-        urls.push(imgInfo);
-        worker();
-      }).catch(err => {
-        console.error(err);
-        errors.push(err);
-        worker();
-      });
-    };
-    for (let i = 0; i < workersCount; i++) {
-      worker();
-    }
-  })
-
-}
-//状态图的代码`````````````````````````````````````````````````````````````````````````
-
-async function getExportArtboards(appID, artboards, device) {
+async function getExportArtboards(appID, artboards, device, teamID = null) {
   if (!appID) {
     throw new Error(i18n('error.chooseProject'));
   }
@@ -410,57 +369,49 @@ async function getExportArtboards(appID, artboards, device) {
   // 过滤已经上传过的画板
   const needUpdateArtboards = artboards.filter(artboard => toUploadPages.find(page => page.clientID === artboard.guid));
   const needExportedDatas = exportedDatas.filter(data => toUploadPages.find(page => page.clientID === data.id));
-
+  
   if (urlCfg.useOSS) {
-    if(needReplaceBitmap.length === 0 ){
+    
+    if (needReplaceBitmap.length === 0) {
       spliceImgList = []
     } else {
-      const ossTokenUrl = await getBatchOSSToken(needReplaceBitmap.map(item => {
-        const curDate = new Date();
-        const objectName = `idoc/xd/${curDate.getFullYear()}-${('0' + (curDate.getMonth() + 1)).slice(-2)}-${('0' + curDate.getDate()).slice(-2)}/${uuidv1()}.png`;
+      const ossTokenUrl = await getBatchOSSToken(needReplaceBitmap.map(() => {
+      
+        const objectName = getFileName('json')
         return { 'dataKey': objectName, 'contentType': 'image/png' }
       }))
       spliceImgList = await UploadWorker(ossTokenUrl, needReplaceBitmap)
-      }
     }
-
+  }
   const type = application.RenditionType.PNG;
-
   const artboardScale = device.artboardScale;
-
   const exportedPNGs = await exportArtboardImages(needUpdateArtboards, artboardScale, type);
   const pages = await Promise.all(needUpdateArtboards.map(async (artboard, index) => {
+
     //上传图片文件
     const image = await exportedPNGs[index].outputFile.read({
       format: type === application.RenditionType.SVG ? storage.formats.utf8 : storage.formats.binary,
     });
-    const imageFile = await uploadFile(new Buffer(image), 'image');
+    const imageFile = await uploadFile(new Buffer(image), 'image', teamID);
 
     //上传切图数据
     let json, jsonFile = {}
-
     if (urlCfg.useOSS) {
-
       json = await needExportedDatas[index].file.read({
         format: storage.formats.utf8,
       });
-
-      json = await getPageJson(needReplaceBitmap,json)
+      json = await getPageJson(needReplaceBitmap, json)
 
       //upload json and uplaod page
-      const curDate = new Date();
-      const objectName = `idoc/xd/${curDate.getFullYear()}-${('0' + (curDate.getMonth() + 1)).slice(-2)}-${('0' + curDate.getDate()).slice(-2)}/${uuidv1()}.json`;
+      const objectName = getFileName('json');
       let urlInfo = await getPolicy(json, objectName);
       jsonFile = urlInfo
-
     } else {
       json = await needExportedDatas[index].file.read({
         format: storage.formats.binary,
       });
-      jsonFile = await uploadFile(new Buffer(json), 'json');
+      jsonFile = await uploadFile(new Buffer(json), 'json', teamID);
     }
-
-    // jsonFile = await uploadFile( urlCfg.useOSS?json:new Buffer(json), 'json');
 
     return {
       appID,
@@ -482,6 +433,7 @@ async function getExportArtboards(appID, artboards, device) {
       version: VERSION
     };
   }));
+  console.log(pages)
   return pages
 }
 
@@ -494,18 +446,17 @@ async function getExportArtboards(appID, artboards, device) {
  */
 async function getExportArtboardDatas(artboards, device) {
   // 导出数据
+
   const markedToExportNodes = [];
   const scale = device.sliceScale;
   const exportedDatas = getArtboardsData(artboards, markedToExportNodes, device);
 
   if (markedToExportNodes.length === 0) {
-    return await Promise.all(exportedDatas.map(saveExportedData));
+    return await Promise.all(exportedDatas.map(saveExportedData))
   }
 
   const allExportedPNGs = await createFilesForMarkExport(markedToExportNodes, application.RenditionType.PNG, scale);
-
   const allExportedSVGs = await createFilesForMarkExport(markedToExportNodes, application.RenditionType.SVG, scale);
-
   const newExportedDatas = await Promise.all(exportedDatas.map(async (data) => {
     const newLayers = await replaceMarkExportNode(data.layers, allExportedPNGs, allExportedSVGs);
     return Object.assign({}, data, {
@@ -514,6 +465,54 @@ async function getExportArtboardDatas(artboards, device) {
     });
   }));
   return await Promise.all(newExportedDatas.map(saveExportedData));
+}
+
+function getFileName(type){
+  const curDate = new Date();
+  return `idoc/xd/${curDate.getFullYear()}-${('0' + (curDate.getMonth() + 1)).slice(-2)}-${('0' + curDate.getDate()).slice(-2)}/${uuidv1()}.${type}`;
+}
+
+
+async function getPageJson(needReplaceBitmap, json) {
+  if (needReplaceBitmap.length === 0 && spliceImgList.length === 0) {
+    return json
+  }
+  spliceImgList.forEach(({ URL, id }) => {
+    json = json.replace(`"bitmap":"${id}"`, `"bitmap":"${URL}"`);
+  });
+  return json
+}
+
+async function UploadWorker(ossTokenUrl, needReplaceBitmap) {
+  const urls = [];
+  // 最大允许5个工作线程
+  const MAX_UPLOAD_WORKERS = 5;
+  const workersCount = Math.min(needReplaceBitmap.length, MAX_UPLOAD_WORKERS);
+  const errors = [];
+  return new Promise((res, rej) => {
+    const allWorkDone = after(workersCount, () => {
+      res(urls);
+    });
+
+    const worker = () => {
+      if (needReplaceBitmap.length <= 0) {
+        allWorkDone();
+        return;
+      }
+      const image = needReplaceBitmap.shift();
+      uploadFileToOss(ossTokenUrl.shift(), new Buffer(image.content), image.id).then(imgInfo => {
+        urls.push(imgInfo);
+        worker();
+      }).catch(err => {
+        console.error(err);
+        errors.push(err);
+        worker();
+      });
+    };
+    for (let i = 0; i < workersCount; i++) {
+      worker();
+    }
+  })
 }
 
 module.exports = {

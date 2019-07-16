@@ -1,9 +1,10 @@
 const { version, platform, } = require('./env');
-const {urlCfg} = require('./urlUtils');
+const { urlCfg } = require('./urlUtils');
+const storage = require("uxp").storage;
 const axios = require('axios');
 let token = null;
-const OS =require('os');
-const systemVersion=OS.platform();
+const OS = require('os')
+const systemVersion = OS.platform()
 
 /**
  * xml http request 辅助方法
@@ -39,7 +40,7 @@ async function xhr(url, method, data = null, headers = {}, returnOnlyPayload = t
     };
     xhr.onerror = (e) => {
       let msg = xhr.statusText;
-      if(xhr.status === 0){
+      if (xhr.status === 0) {
         msg = 'Network not connected.';
       }
       reject(msg);
@@ -57,8 +58,8 @@ async function xhr(url, method, data = null, headers = {}, returnOnlyPayload = t
   });
 }
 
-async function uploadFile(data, type = 'image') {
-  return xhr(`${urlCfg.api}/file/xd-${type}`, 'PUT', data);
+async function uploadFile(data, type = 'image', teamID) {
+  return xhr(`${urlCfg.api}/file/xd-${type}/${teamID}`, 'PUT', data);
 }
 
 function builderHeader() {
@@ -85,12 +86,12 @@ async function get(url, data = null) {
   return xhr(url, 'GET', json, builderHeader());
 }
 
-async function put(url, data = null,ossHeader= null) {
+async function put(url, data = null, ossHeader = null) {
   var json = data;
   if (json && typeof json === 'object') {
     json = JSON.stringify(json);
   }
-  return xhr(url, 'PUT', json, ossHeader||builderHeader());
+  return xhr(url, 'PUT', json, ossHeader || builderHeader());
 }
 
 async function patch(url, data = null) {
@@ -107,7 +108,7 @@ async function patch(url, data = null) {
  * @returns {Promise<void>}
  */
 async function checkPages(data) {
-  return post(`${urlCfg.api}/page/multiple/check`,  data);
+  return post(`${urlCfg.api}/page/multiple/check`, data);
 }
 
 /**
@@ -140,7 +141,7 @@ async function createApp(data) {
  * @returns {Promise<*>}
  */
 
-async function getAllCopy( appID, clientID) {
+async function getAllCopy(appID, clientID) {
   return get(`${urlCfg.api}/page/${appID}/pageCopies/${clientID}`)
 }
 
@@ -150,7 +151,7 @@ async function getAllCopy( appID, clientID) {
  */
 
 async function addNewCopy(data) {
-  return put(`${urlCfg.api}/page/uploadPageCopy`,data)
+  return put(`${urlCfg.api}/page/uploadPageCopy`, data)
 }
 
 /**
@@ -158,7 +159,7 @@ async function addNewCopy(data) {
  * @returns {Promise<*>}
  */
 
-async function CoverCopy(data,pageID) {
+async function CoverCopy(data, pageID) {
   return xhr(`${urlCfg.api}/page/coverCopy/${pageID}`, 'PATCH', JSON.stringify(data), builderHeader());
 }
 
@@ -201,56 +202,56 @@ function checkUpdate() {
  * 获取oss的token
  */
 async function getOSSToken(filePath, isImg) {
-  if(isImg){
+  if (isImg) {
     return await get(`${urlCfg.api}/user/ossSign?dataKey=${filePath}&contentType=image/png`);
   }
   return await get(`${urlCfg.api}/user/ossSign?dataKey=${filePath}&contentType=application/json;charset=UTF-8`);
 }
 
 function getBatchOSSToken(ossSignArr) {
-  return post(`${urlCfg.api}/user/ossSign`,{ossSignArr})
+  return post(`${urlCfg.api}/user/ossSign`, { ossSignArr })
 }
 
 function uploadFileToOss(ossToken, file, id) {
   const ossRequest = axios.create({
-    headers: {'content-type': 'image/png'},
+    headers: { 'content-type': 'image/png' },
   });
   return ossRequest({
     method: 'put',
     url: ossToken,
     data: file,
   }).then(() => {
-    return {URL: ossToken.split('?')[0], id}
+    return { URL: ossToken.split('?')[0], id }
   }).catch((e) => {
     console.error(e);
   });
 }
 // 获取policy
-async function getPolicy (file, filePath, isImg) {
-  if(file && filePath) {
-    let ossToken = await getOSSToken(filePath,isImg)
-      try{
-        if(isImg){
-          // await put(ossToken, file, { "Content-Type": "image/png" });
-          const ossRequest = axios.create({
-            headers: {'content-type': 'image/png'},
-          });
-          ossRequest({
-            method: 'put',
-            url: ossToken,
-            data: file,
-          }).then((ossRes) => {
-          }).catch((e) => {
-            console.error(e);
-          });
-        }else{
-          await put(ossToken ,file, { "Content-Type": "application/json;charset=UTF-8" });
-        }
-      }catch(e) {
-        console.log(e)
+async function getPolicy(file, filePath, isImg) {
+  if (file && filePath) {
+    let ossToken = await getOSSToken(filePath, isImg)
+    try {
+      if (isImg) {
+        // await put(ossToken, file, { "Content-Type": "image/png" });
+        const ossRequest = axios.create({
+          headers: { 'content-type': 'image/png' },
+        });
+        ossRequest({
+          method: 'put',
+          url: ossToken,
+          data: file,
+        }).then((ossRes) => {
+        }).catch((e) => {
+          console.error(e);
+        });
+      } else {
+        await put(ossToken, file, { "Content-Type": "application/json;charset=UTF-8" });
       }
-      return ({URL: ossToken.split('?')[0], id:filePath});
-  }else{
+    } catch (e) {
+      console.log(e)
+    }
+    return ({ URL: ossToken.split('?')[0], id: filePath });
+  } else {
     throw new Error('获取导出的切图数据失败');
   }
 }

@@ -3,23 +3,24 @@ const systeLanguage = application.appLanguage.substr(0, 2);
 const { saveDefaultLanguage, getDefaultLanguage } = require('./localCache');
 
 const zh_CN = 'zh';
+const tw_CN = 'tw';
 const en_US = 'en';
 
 let currentLanguage = zh_CN; //systeLanguage;
 
-async function switchLanguage(language, needSave = true){
+async function switchLanguage(language, needSave = true) {
   currentLanguage = language || systeLanguage;
   saveDefaultLanguage(currentLanguage, needSave);
   return currentLanguage;
 }
 
 async function initLanguage() {
-  return getDefaultLanguage().then((language)=>{
+  return getDefaultLanguage().then((language) => {
     return switchLanguage(language, false)
   })
 }
 
-function getCurrentLanguage(){
+function getCurrentLanguage() {
   return currentLanguage;
 }
 
@@ -47,6 +48,7 @@ initLanguage();
 module.exports = {
   zh_CN,
   en_US,
+  tw_CN,
   switchLanguage,
   languageList,
   getCurrentLanguage,

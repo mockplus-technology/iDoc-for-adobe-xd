@@ -25,6 +25,7 @@
 
       .language-list {
         flex: 1;
+
         //padding: 0 20px;
         button {
           display: inline-block;
@@ -34,14 +35,15 @@
       }
     }
 
-    .version-tips{
+    .version-tips {
       text-align: left;
-      div{
+
+      div {
         margin-bottom: 20px;
       }
     }
 
-    .bottom{
+    .bottom {
       position: absolute;
       bottom: 0;
       text-align: left;

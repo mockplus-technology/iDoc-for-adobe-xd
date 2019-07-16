@@ -20,16 +20,15 @@ class DevicesPanel extends React.Component {
       return <div />;
     }
     return (
-      <div className="c-devices-panel"
-           onClick={onClose}
-      >
+      <div className="c-devices-panel" onClick={onClose}>
         <ListBox
           maxHeight={240}
           onSelected={onSelected}
           items={devices}
-          labelFunction={device => device.name || '-'} />
+          labelFunction={device => device.name || '-'}
+        />
       </div>
-    )
+    );
   }
 }
 

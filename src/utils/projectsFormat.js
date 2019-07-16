@@ -36,7 +36,7 @@ const formatAllApp = (projects) => {
     return result;
   }
   projects.forEach(item => {
-    if (item.isAppSet && item.appSets.length!==0) {
+    if (item.isAppSet && item.appSets.length !== 0) {
       result.push(...item.appSets)
     } else {
       result.push(item)
@@ -45,8 +45,17 @@ const formatAllApp = (projects) => {
   return result;
 }
 
+const truncate = (string) => {
+  if (string.length > 20) {
+    return string.slice(0, 20) + '...';
+  } else {
+    return string
+  }
+}
+
 
 module.exports = {
   projectsFormat,
-  formatAllApp
+  formatAllApp,
+  truncate
 };

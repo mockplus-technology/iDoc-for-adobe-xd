@@ -1,6 +1,6 @@
-const React = require("react");
+const React = require('react');
 
-require("./ListBox.scss");
+require('./ListBox.scss');
 
 /**
  * 列表框
@@ -15,7 +15,7 @@ const ListBox = ({
   onSelected,
   labelFunction,
   maxHeight = 300,
-  Selected
+  Selected,
 }) => {
   let height = 0;
   if (items && items.length > 0) {
@@ -31,7 +31,7 @@ const ListBox = ({
         {items &&
           items.map(item => {
             const text = labelFunction(item);
-            if (text === "-") {
+            if (text === '-') {
               return (
                 <li
                   className="separator"
@@ -41,13 +41,13 @@ const ListBox = ({
                 />
               );
             } else {
-              if (item.isAppSet) {  
+              if (item.isAppSet) {
                 return (
                   <div>
                     <li
                       className={`${
                         Selected && Selected === item.id
-                          ? "selected-item"
+                          ? 'selected-item'
                           : null
                       }`}
                       onClick={e => {
@@ -61,7 +61,7 @@ const ListBox = ({
                       <li
                         className={`${
                           Selected && Selected === appItem.id
-                            ? "selected-item"
+                            ? 'selected-item'
                             : null
                         }`}
                         onClick={e => {
@@ -78,7 +78,7 @@ const ListBox = ({
               return (
                 <li
                   className={`${
-                    Selected && Selected === item.id ? "selected-item" : null
+                    Selected && Selected === item.id ? 'selected-item' : null
                   }`}
                   onClick={e => {
                     onSelected(item);

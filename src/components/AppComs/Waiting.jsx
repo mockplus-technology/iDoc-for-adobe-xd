@@ -1,8 +1,7 @@
-const React= require('react');
+const React = require('react');
 const { i18n } = require('../../i18n');
-const isWin=require('../../utils/isWin.js');
+const isWin = require('../../utils/isWin.js');
 require('./Waiting.scss');
-
 
 const Waiting = ({ text, isShow }) => {
   if (!isShow) {
@@ -11,7 +10,7 @@ const Waiting = ({ text, isShow }) => {
   return (
     <div className="c-wait-panel">
       <div className="content">
-        <span className={isWin&&"tip"}>{i18n('main.waiting')}</span>
+        <span className={isWin && 'tip'}>{i18n('main.waiting')}</span>
       </div>
     </div>
   );
